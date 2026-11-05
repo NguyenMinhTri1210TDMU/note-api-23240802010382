@@ -1,0 +1,24 @@
+{
+  "name": "note-api-23240802010382",
+  "version": "1.0.0",
+  "description": "TDMU Cloud Computing Lab",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --test",
+    "start": "node src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NguyenMinhTri1210TDMU/note-api-23240802010382.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NguyenMinhTri1210TDMU/note-api-23240802010382/issues"
+  },
+  "homepage": "https://github.com/NguyenMinhTri1210TDMU/note-api-23240802010382#readme",
+  "dependencies": {
+    "express": "^5.3.0"
+  }
+}
