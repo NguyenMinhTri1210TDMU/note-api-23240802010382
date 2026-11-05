@@ -4,219 +4,857 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bài 1 - Hello Cloud API</title>
+    <title>Bài 1 - Làm quen với môi trường đám mây</title>
 
     <style>
+        :root {
+            --primary: #087fe5;
+            --primary-dark: #064a9b;
+            --primary-light: #eaf5ff;
+            --blue-border: #c6e2ff;
+            --text: #17365f;
+            --muted: #64748b;
+            --white: #ffffff;
+            --background: #f7fbff;
+            --success: #159b70;
+            --danger: #e05252;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 90px;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            max-width: 1000px;
-            margin: 40px auto;
-            padding: 20px;
-            background: #f4f6f9;
-            color: #263238;
-            line-height: 1.6;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: var(--white);
+            color: var(--text);
+            line-height: 1.7;
         }
 
-        h1, h2 {
-            color: #1565c0;
+        a {
+            text-decoration: none;
+            color: inherit;
         }
 
-        .section {
+        .container {
+            width: min(1180px, 92%);
+            margin: auto;
+        }
+
+        /* HEADER */
+
+        header {
+            background: linear-gradient(120deg, #ffffff, #edf7ff);
+            border-bottom: 1px solid var(--blue-border);
+            padding: 32px 0 22px;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .cloud-icon {
+            width: 76px;
+            height: 76px;
+            background: var(--primary-light);
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 43px;
+        }
+
+        .header-text h1 {
+            color: var(--primary-dark);
+            font-size: clamp(24px, 4vw, 36px);
+            line-height: 1.3;
+            margin-bottom: 7px;
+        }
+
+        .header-text p {
+            color: var(--muted);
+            font-size: 16px;
+        }
+
+        .student-info {
+            margin-top: 22px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .info-tag {
+            padding: 8px 15px;
             background: white;
-            padding: 22px;
-            margin-bottom: 25px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid var(--blue-border);
+            border-radius: 30px;
+            color: var(--primary-dark);
+            font-size: 14px;
+        }
+
+        /* NAVIGATION */
+
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--blue-border);
+        }
+
+        .nav-list {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 12px 0;
+        }
+
+        .nav-list a {
+            white-space: nowrap;
+            padding: 9px 16px;
+            border-radius: 9px;
+            color: var(--primary-dark);
+            font-size: 14px;
+            font-weight: 600;
+            transition: .25s;
+        }
+
+        .nav-list a:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* MAIN */
+
+        main {
+            padding: 35px 0 55px;
+        }
+
+        section {
+            margin-bottom: 35px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            margin-bottom: 20px;
+            color: var(--primary-dark);
+            font-size: 25px;
+        }
+
+        .section-number {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, #1598ff, #0064cb);
+            color: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid var(--blue-border);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 5px 18px rgba(18, 112, 205, .07);
+        }
+
+        .card h3 {
+            color: var(--primary-dark);
+            margin-bottom: 12px;
+            font-size: 19px;
+        }
+
+        .card p {
+            color: #425875;
+            margin-bottom: 10px;
+        }
+
+        /* INTRODUCTION */
+
+        .intro-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .intro-visual {
+            background: linear-gradient(145deg, #eaf6ff, #ffffff);
+            border: 1px solid var(--blue-border);
+            border-radius: 15px;
+            min-height: 230px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .intro-visual .big-icon {
+            font-size: 75px;
+            margin-bottom: 10px;
+        }
+
+        .intro-visual h3 {
+            color: var(--primary-dark);
+        }
+
+        .check-list {
+            list-style: none;
+        }
+
+        .check-list li {
+            padding: 7px 0;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .check {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* TABLE */
+
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid var(--blue-border);
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
+            min-width: 650px;
         }
 
         th {
-            background: #1565c0;
+            background: linear-gradient(120deg, #168feb, #0864c5);
             color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        td {
+            padding: 13px 15px;
+            border-bottom: 1px solid #e3effa;
+            color: #40536c;
         }
 
         tr:nth-child(even) {
-            background: #f2f6fc;
+            background: #f4f9ff;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        td:first-child {
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        /* NIST */
+
+        .nist-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .nist-item {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+            background: #f5faff;
+            border: 1px solid var(--blue-border);
+            border-radius: 13px;
+            padding: 17px;
+            transition: .25s;
+        }
+
+        .nist-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 112, 220, .1);
+        }
+
+        .nist-icon {
+            min-width: 43px;
+            height: 43px;
+            border-radius: 11px;
+            background: #dceeff;
+            color: var(--primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 23px;
+        }
+
+        .nist-item h3 {
+            font-size: 16px;
+            color: var(--primary-dark);
+            margin-bottom: 5px;
+        }
+
+        .nist-item p {
+            font-size: 14px;
+            margin: 0;
+        }
+
+        /* RESULTS */
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px;
+            background: var(--primary-light);
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+
+        .metric strong {
+            color: var(--primary-dark);
+            font-size: 20px;
+        }
+
+        .metric-label {
+            color: #405875;
+            font-weight: 600;
+        }
+
+        .result-note {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .api-code {
+            background: #f1f7ff;
+            border: 1px solid var(--blue-border);
+            border-radius: 12px;
+            padding: 18px;
+            overflow-x: auto;
+            color: #174b86;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .api-code code {
+            font-family: Consolas, monospace;
+            white-space: pre;
+        }
+
+        /* ANALYSIS */
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .analysis-card {
+            border-radius: 14px;
+            padding: 21px;
+            background: #f5faff;
+            border: 1px solid var(--blue-border);
+        }
+
+        .analysis-card h3 {
+            color: var(--primary-dark);
+            margin-bottom: 12px;
+        }
+
+        .analysis-card ul {
+            padding-left: 20px;
+            color: #425875;
+        }
+
+        .analysis-card li {
+            margin-bottom: 9px;
+        }
+
+        .positive {
+            color: var(--success);
+        }
+
+        .negative {
+            color: var(--danger);
         }
 
         .conclusion {
-            background: #e3f2fd;
-            padding: 18px;
-            border-left: 5px solid #1565c0;
+            margin-top: 20px;
+            padding: 22px;
+            background: linear-gradient(120deg, #eaf5ff, #f7fbff);
+            border-left: 5px solid var(--primary);
+            border-radius: 12px;
         }
 
+        .conclusion h3 {
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+        }
+
+        /* FOOTER */
+
         footer {
+            background: #f0f7ff;
+            border-top: 1px solid var(--blue-border);
+            padding: 25px 0;
             text-align: center;
-            color: #777;
-            margin-top: 30px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        footer strong {
+            color: var(--primary-dark);
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 800px) {
+            .intro-grid,
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nist-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .header-content {
+                align-items: flex-start;
+            }
+
+            .cloud-icon {
+                width: 55px;
+                height: 55px;
+                font-size: 30px;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .card {
+                padding: 17px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <h1>BÀI 1 - HELLO CLOUD API</h1>
+    <!-- HEADER -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="cloud-icon">☁</div>
 
-    <div class="section">
-        <h2>1. Thông tin sinh viên</h2>
-        <p><strong>Họ tên:</strong> Nguyễn Minh Trí</p>
-        <p><strong>Mã sinh viên:</strong> 23240802010382</p>
-        <p><strong>Repository:</strong> note-api-23240802010382</p>
-        <p><strong>Nền tảng:</strong> GitHub Codespaces</p>
-    </div>
+                <div class="header-text">
+                    <h1>Bài 1: Làm quen với môi trường đám mây</h1>
+                    <p>Thực hành GitHub Codespaces – Triển khai Hello Cloud API – GitHub Pages</p>
+                </div>
+            </div>
 
-    <div class="section">
-        <h2>2. So sánh máy tính cá nhân và Codespaces</h2>
+            <div class="student-info">
+                <span class="info-tag">👨‍🎓 Nguyễn Minh Trí</span>
+                <span class="info-tag">MSSV: 23240802010382</span>
+                <span class="info-tag">Nền tảng: GitHub Codespaces</span>
+            </div>
+        </div>
+    </header>
 
-        <table>
-            <tr>
-                <th>Tiêu chí</th>
-                <th>Máy tính cá nhân</th>
-                <th>GitHub Codespaces</th>
-            </tr>
+    <!-- NAVIGATION -->
+    <nav>
+        <div class="container">
+            <div class="nav-list">
+                <a href="#overview">Tổng quan</a>
+                <a href="#comparison">So sánh môi trường</a>
+                <a href="#nist">Đặc tính NIST</a>
+                <a href="#results">Kết quả thực nghiệm</a>
+                <a href="#analysis">Phân tích & Kết luận</a>
+            </div>
+        </div>
+    </nav>
 
-            <tr>
-                <td>Hệ điều hành</td>
-                <td>Windows 11 Home Single Language</td>
-                <td>Debian GNU/Linux 13</td>
-            </tr>
+    <main class="container">
 
-            <tr>
-                <td>CPU</td>
-                <td>AMD Ryzen 5 5600H</td>
-                <td>2 CPUs</td>
-            </tr>
+        <!-- 1. INTRODUCTION -->
+        <section id="overview">
+            <h2 class="section-title">
+                <span class="section-number">1</span>
+                Giới thiệu bài thực hành
+            </h2>
 
-            <tr>
-                <td>Số nhân CPU</td>
-                <td>6 cores</td>
-                <td>Chưa xác định</td>
-            </tr>
+            <div class="card intro-grid">
+                <div class="intro-visual">
+                    <div class="big-icon">💻</div>
+                    <h3>Hello Cloud API</h3>
+                    <p>Phát triển ứng dụng trên nền tảng đám mây</p>
+                </div>
 
-            <tr>
-                <td>Logical processors</td>
-                <td>12</td>
-                <td>Chưa xác định</td>
-            </tr>
+                <div>
+                    <h3>Mục tiêu bài thực hành</h3>
 
-            <tr>
-                <td>RAM</td>
-                <td>15.38 GB</td>
-                <td>7.756 GiB</td>
-            </tr>
+                    <ul class="check-list">
+                        <li>
+                            <span class="check">✔</span>
+                            Làm quen với môi trường phát triển GitHub Codespaces.
+                        </li>
+                        <li>
+                            <span class="check">✔</span>
+                            Khởi tạo môi trường Node.js và xây dựng API đơn giản.
+                        </li>
+                        <li>
+                            <span class="check">✔</span>
+                            Triển khai ứng dụng Hello Cloud API trên Codespaces.
+                        </li>
+                        <li>
+                            <span class="check">✔</span>
+                            So sánh môi trường máy tính cá nhân và môi trường đám mây.
+                        </li>
+                        <li>
+                            <span class="check">✔</span>
+                            Tìm hiểu 5 đặc tính điện toán đám mây theo NIST.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
 
-            <tr>
-                <td>Kiến trúc</td>
-                <td>64-bit</td>
-                <td>x86_64</td>
-            </tr>
+        <!-- 2. COMPARISON -->
+        <section id="comparison">
+            <h2 class="section-title">
+                <span class="section-number">2</span>
+                So sánh môi trường phát triển
+            </h2>
 
-            <tr>
-                <td>Node.js</td>
-                <td>Chưa đo</td>
-                <td>22.23.4</td>
-            </tr>
+            <div class="card">
+                <h3>Máy tính cá nhân và GitHub Codespaces</h3>
 
-            <tr>
-                <td>Docker</td>
-                <td>Chưa đo</td>
-                <td>29.9.3</td>
-            </tr>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tiêu chí</th>
+                                <th>Máy tính cá nhân (Local)</th>
+                                <th>GitHub Codespaces</th>
+                            </tr>
+                        </thead>
 
-            <tr>
-                <td>Khả năng truy cập</td>
-                <td>Trực tiếp trên máy tính</td>
-                <td>Qua Internet</td>
-            </tr>
-        </table>
-    </div>
+                        <tbody>
+                            <tr>
+                                <td>Hệ điều hành</td>
+                                <td>Windows 11 Home Single Language</td>
+                                <td>Debian GNU/Linux 13 (Trixie)</td>
+                            </tr>
 
-    <div class="section">
-        <h2>3. Năm đặc tính của điện toán đám mây theo NIST</h2>
+                            <tr>
+                                <td>CPU</td>
+                                <td>AMD Ryzen 5 5600H</td>
+                                <td>2 CPUs được cấp cho môi trường</td>
+                            </tr>
 
-        <h3>3.1. On-demand Self-service</h3>
-        <p>
-            Người dùng có thể tự tạo và sử dụng môi trường Codespaces
-            theo nhu cầu mà không cần yêu cầu nhà cung cấp thực hiện
-            thủ công từng bước.
-        </p>
+                            <tr>
+                                <td>Số nhân / luồng</td>
+                                <td>6 nhân / 12 luồng</td>
+                                <td>Không xác định số nhân vật lý của máy chủ</td>
+                            </tr>
 
-        <h3>3.2. Broad Network Access</h3>
-        <p>
-            Có thể truy cập môi trường phát triển thông qua Internet
-            bằng trình duyệt trên máy tính hoặc điện thoại.
-        </p>
+                            <tr>
+                                <td>RAM</td>
+                                <td>15.38 GB</td>
+                                <td>Khoảng 7.756 GiB theo Docker Info</td>
+                            </tr>
 
-        <h3>3.3. Resource Pooling</h3>
-        <p>
-            Nhà cung cấp sử dụng tài nguyên tính toán được tổ chức
-            thành các nhóm để phục vụ nhiều người dùng.
-        </p>
+                            <tr>
+                                <td>Node.js</td>
+                                <td>Cài đặt trên máy cá nhân</td>
+                                <td>v22.23.4</td>
+                            </tr>
 
-        <h3>3.4. Rapid Elasticity</h3>
-        <p>
-            Tài nguyên điện toán đám mây có khả năng được cấp phát
-            hoặc giải phóng linh hoạt theo nhu cầu sử dụng và giới hạn
-            của dịch vụ.
-        </p>
+                            <tr>
+                                <td>Cài đặt & cấu hình</td>
+                                <td>Người dùng tự cài đặt và cấu hình</td>
+                                <td>Môi trường phát triển được cung cấp sẵn</td>
+                            </tr>
 
-        <h3>3.5. Measured Service</h3>
-        <p>
-            Việc sử dụng tài nguyên Codespaces được theo dõi và
-            có thể xem thông qua thông tin sử dụng và thanh toán
-            trên GitHub.
-        </p>
-    </div>
+                            <tr>
+                                <td>Khả năng truy cập</td>
+                                <td>Chủ yếu trên máy đã cài đặt</td>
+                                <td>Truy cập qua Internet từ nhiều thiết bị</td>
+                            </tr>
 
-    <div class="section">
-        <h2>4. Kết quả thực nghiệm</h2>
+                            <tr>
+                                <td>Tính đồng nhất</td>
+                                <td>Có thể khác nhau giữa các máy</td>
+                                <td>Có thể cấu hình môi trường nhất quán</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
 
-        <p>
-            Đã triển khai thành công ứng dụng Hello Cloud API
-            sử dụng Node.js và Express trên GitHub Codespaces.
-        </p>
+        <!-- 3. NIST -->
+        <section id="nist">
+            <h2 class="section-title">
+                <span class="section-number">3</span>
+                5 đặc tính của điện toán đám mây (NIST)
+            </h2>
 
-        <p>
-            API trả về các thông tin thực tế của môi trường máy chủ
-            như hostname, hệ điều hành, số CPU, dung lượng RAM,
-            thời gian hoạt động và thời gian hiện tại.
-        </p>
+            <div class="nist-grid">
 
-        <p>
-            Đã cấu hình cổng 3000 ở chế độ Public và kiểm tra
-            truy cập API thành công từ điện thoại thông qua Internet.
-        </p>
-    </div>
+                <div class="nist-item">
+                    <div class="nist-icon">☁</div>
+                    <div>
+                        <h3>1. On-demand Self-service</h3>
+                        <p>
+                            Người dùng có thể tự tạo và sử dụng tài nguyên
+                            điện toán khi có nhu cầu mà không cần tương tác
+                            trực tiếp với nhà cung cấp.
+                        </p>
+                        <p><strong>Ví dụ:</strong> Tạo Codespace trực tiếp từ repository GitHub.</p>
+                    </div>
+                </div>
 
-    <div class="section conclusion">
-        <h2>5. Kết luận</h2>
+                <div class="nist-item">
+                    <div class="nist-icon">🌐</div>
+                    <div>
+                        <h3>2. Broad Network Access</h3>
+                        <p>
+                            Các dịch vụ đám mây có thể được truy cập thông qua
+                            mạng Internet bằng nhiều loại thiết bị khác nhau.
+                        </p>
+                        <p><strong>Ví dụ:</strong> Truy cập Codespaces từ máy tính hoặc điện thoại.</p>
+                    </div>
+                </div>
 
-        <p>
-            Qua bài thực hành, em đã làm quen với nền tảng GitHub
-            Codespaces, triển khai một API trên môi trường đám mây
-            và kiểm tra khả năng truy cập từ nhiều thiết bị.
-        </p>
+                <div class="nist-item">
+                    <div class="nist-icon">▱</div>
+                    <div>
+                        <h3>3. Resource Pooling</h3>
+                        <p>
+                            Tài nguyên điện toán được tập trung trong một
+                            kho dùng chung và phân bổ linh hoạt cho nhiều người dùng.
+                        </p>
+                        <p><strong>Ví dụ:</strong> Codespaces sử dụng tài nguyên từ hạ tầng đám mây của GitHub.</p>
+                    </div>
+                </div>
 
-        <p>
-            Thực nghiệm giúp hiểu rõ hơn về việc cung cấp tài nguyên,
-            khả năng truy cập mạng và quản lý môi trường phát triển
-            trong điện toán đám mây.
-        </p>
-    </div>
+                <div class="nist-item">
+                    <div class="nist-icon">↗</div>
+                    <div>
+                        <h3>4. Rapid Elasticity</h3>
+                        <p>
+                            Tài nguyên có thể được mở rộng hoặc thu hẹp nhanh chóng
+                            tùy theo nhu cầu sử dụng.
+                        </p>
+                        <p><strong>Ví dụ:</strong> Lựa chọn cấu hình Codespaces phù hợp với nhu cầu phát triển.</p>
+                    </div>
+                </div>
 
+                <div class="nist-item">
+                    <div class="nist-icon">▥</div>
+                    <div>
+                        <h3>5. Measured Service</h3>
+                        <p>
+                            Hệ thống tự động đo lường, giám sát và báo cáo
+                            mức sử dụng tài nguyên.
+                        </p>
+                        <p><strong>Ví dụ:</strong> Theo dõi CPU-hours và dung lượng lưu trữ tại GitHub Billing Usage.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 4. RESULTS -->
+        <section id="results">
+            <h2 class="section-title">
+                <span class="section-number">4</span>
+                Kết quả thực nghiệm
+            </h2>
+
+            <div class="result-grid">
+
+                <div class="card">
+                    <h3>⏱ Thời gian thiết lập môi trường</h3>
+
+                    <div class="metric">
+                        <span class="metric-label">Máy tính cá nhân</span>
+                        <strong>1,35 giây</strong>
+                    </div>
+
+                    <div class="metric">
+                        <span class="metric-label">GitHub Codespaces</span>
+                        <strong>2,18 giây</strong>
+                    </div>
+
+                    <p class="result-note">
+                        Số liệu được ghi nhận từ hai ảnh đồng hồ bấm giờ.
+                        Đây là kết quả của hai lần đo riêng lẻ, không phải
+                        thời gian khởi tạo toàn bộ môi trường.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h3>💻 Thông tin môi trường Codespaces</h3>
+
+                    <div class="metric">
+                        <span class="metric-label">Node.js</span>
+                        <strong>v22.23.4</strong>
+                    </div>
+
+                    <div class="metric">
+                        <span class="metric-label">Docker</span>
+                        <strong>v29.9.3</strong>
+                    </div>
+
+                    <div class="metric">
+                        <span class="metric-label">CPU</span>
+                        <strong>2 CPUs</strong>
+                    </div>
+
+                    <div class="metric">
+                        <span class="metric-label">RAM</span>
+                        <strong>7.756 GiB</strong>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="card" style="margin-top:20px;">
+                <h3>📡 Kết quả API Hello Cloud</h3>
+
+                <p>
+                    Sau khi triển khai thành công, API có thể trả về
+                    thông tin môi trường đang chạy.
+                </p>
+
+                <pre class="api-code"><code>{
+  "message": "Xin chào từ đám mây!",
+  "host": "codespaces-99ba78",
+  "platform": "Linux 6.8.0-1064-azure",
+  "cpus": 2,
+  "memoryGB": 7.8,
+  "uptimeSec": "Thay đổi theo thời điểm gọi API",
+  "time": "Thời gian thực tế khi gọi API"
+}</code></pre>
+
+                <p class="result-note">
+                    Lưu ý: Đây là ví dụ dựa trên kết quả API đã ghi nhận.
+                    Các trường uptimeSec và time thay đổi theo thời điểm thực tế.
+                </p>
+            </div>
+        </section>
+
+        <!-- 5. ANALYSIS -->
+        <section id="analysis">
+            <h2 class="section-title">
+                <span class="section-number">5</span>
+                Phân tích và kết luận
+            </h2>
+
+            <div class="analysis-grid">
+
+                <div class="analysis-card">
+                    <h3>📊 Trả lời câu hỏi</h3>
+                    <ul>
+                        <li>
+                            So sánh trường host trước và sau khi Stop/Start
+                            để quan sát hostname của môi trường.
+                        </li>
+                        <li>
+                            GitHub Codespaces gần với mô hình PaaS vì GitHub
+                            quản lý hạ tầng và máy ảo, người dùng tập trung
+                            phát triển mã nguồn.
+                        </li>
+                        <li>
+                            Chỉ dựa vào hostname không đủ chứng minh máy ảo
+                            đã chuyển sang máy chủ vật lý khác.
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="analysis-card">
+                    <h3 class="positive">✔ Ưu điểm</h3>
+                    <ul>
+                        <li>Không cần tự cài đặt toàn bộ môi trường trên máy lab.</li>
+                        <li>Môi trường phát triển có thể được cấu hình nhất quán.</li>
+                        <li>Truy cập linh hoạt từ nhiều thiết bị có Internet.</li>
+                        <li>Dễ dàng lưu trữ và đồng bộ mã nguồn qua GitHub.</li>
+                    </ul>
+                </div>
+
+                <div class="analysis-card">
+                    <h3 class="negative">⚠ Hạn chế và rủi ro</h3>
+                    <ul>
+                        <li>Phụ thuộc vào kết nối Internet.</li>
+                        <li>Rủi ro bảo mật khi tài khoản hoặc mã nguồn bị lộ.</li>
+                        <li>Có thể phát sinh chi phí khi vượt hạn mức miễn phí.</li>
+                        <li>Phụ thuộc vào nền tảng và dịch vụ của nhà cung cấp.</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="conclusion">
+                <h3>🎯 Kết luận</h3>
+
+                <p>
+                    Qua bài thực hành, GitHub Codespaces cho thấy khả năng
+                    cung cấp môi trường phát triển phần mềm trên nền tảng
+                    đám mây một cách linh hoạt và thuận tiện. Người dùng
+                    có thể xây dựng, kiểm thử và triển khai ứng dụng mà
+                    không cần tự thiết lập toàn bộ hạ tầng trên máy tính
+                    cá nhân. Tuy nhiên, cần chú ý đến vấn đề bảo mật,
+                    kết nối Internet và quản lý tài nguyên để sử dụng
+                    dịch vụ hiệu quả.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
     <footer>
-        Bài thực hành Điện toán đám mây - TDMU
+        <div class="container">
+            <p><strong>BÀI THỰC HÀNH ĐIỆN TOÁN ĐÁM MÂY</strong></p>
+            <p>GitHub Codespaces – Hello Cloud API – GitHub Pages</p>
+            <p>Nguyễn Minh Trí | 23240802010382</p>
+        </div>
     </footer>
 
 </body>
