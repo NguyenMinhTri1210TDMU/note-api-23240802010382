@@ -1,861 +1,641 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bài 1 - Làm quen với môi trường đám mây</title>
-
-    <style>
-        :root {
-            --primary: #087fe5;
-            --primary-dark: #064a9b;
-            --primary-light: #eaf5ff;
-            --blue-border: #c6e2ff;
-            --text: #17365f;
-            --muted: #64748b;
-            --white: #ffffff;
-            --background: #f7fbff;
-            --success: #159b70;
-            --danger: #e05252;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            scroll-padding-top: 90px;
-        }
-
-        body {
-            font-family: "Segoe UI", Arial, sans-serif;
-            background: var(--white);
-            color: var(--text);
-            line-height: 1.7;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .container {
-            width: min(1180px, 92%);
-            margin: auto;
-        }
-
-        /* HEADER */
-
-        header {
-            background: linear-gradient(120deg, #ffffff, #edf7ff);
-            border-bottom: 1px solid var(--blue-border);
-            padding: 32px 0 22px;
-        }
-
-        .header-content {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .cloud-icon {
-            width: 76px;
-            height: 76px;
-            background: var(--primary-light);
-            border-radius: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-            font-size: 43px;
-        }
-
-        .header-text h1 {
-            color: var(--primary-dark);
-            font-size: clamp(24px, 4vw, 36px);
-            line-height: 1.3;
-            margin-bottom: 7px;
-        }
-
-        .header-text p {
-            color: var(--muted);
-            font-size: 16px;
-        }
-
-        .student-info {
-            margin-top: 22px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .info-tag {
-            padding: 8px 15px;
-            background: white;
-            border: 1px solid var(--blue-border);
-            border-radius: 30px;
-            color: var(--primary-dark);
-            font-size: 14px;
-        }
-
-        /* NAVIGATION */
-
-        nav {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: rgba(255, 255, 255, 0.96);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--blue-border);
-        }
-
-        .nav-list {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding: 12px 0;
-        }
-
-        .nav-list a {
-            white-space: nowrap;
-            padding: 9px 16px;
-            border-radius: 9px;
-            color: var(--primary-dark);
-            font-size: 14px;
-            font-weight: 600;
-            transition: .25s;
-        }
-
-        .nav-list a:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        /* MAIN */
-
-        main {
-            padding: 35px 0 55px;
-        }
-
-        section {
-            margin-bottom: 35px;
-        }
-
-        .section-title {
-            display: flex;
-            align-items: center;
-            gap: 13px;
-            margin-bottom: 20px;
-            color: var(--primary-dark);
-            font-size: 25px;
-        }
-
-        .section-number {
-            width: 42px;
-            height: 42px;
-            background: linear-gradient(135deg, #1598ff, #0064cb);
-            color: white;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-
-        .card {
-            background: white;
-            border: 1px solid var(--blue-border);
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 5px 18px rgba(18, 112, 205, .07);
-        }
-
-        .card h3 {
-            color: var(--primary-dark);
-            margin-bottom: 12px;
-            font-size: 19px;
-        }
-
-        .card p {
-            color: #425875;
-            margin-bottom: 10px;
-        }
-
-        /* INTRODUCTION */
-
-        .intro-grid {
-            display: grid;
-            grid-template-columns: 1fr 1.5fr;
-            gap: 25px;
-            align-items: center;
-        }
-
-        .intro-visual {
-            background: linear-gradient(145deg, #eaf6ff, #ffffff);
-            border: 1px solid var(--blue-border);
-            border-radius: 15px;
-            min-height: 230px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .intro-visual .big-icon {
-            font-size: 75px;
-            margin-bottom: 10px;
-        }
-
-        .intro-visual h3 {
-            color: var(--primary-dark);
-        }
-
-        .check-list {
-            list-style: none;
-        }
-
-        .check-list li {
-            padding: 7px 0;
-            display: flex;
-            gap: 10px;
-            align-items: flex-start;
-        }
-
-        .check {
-            color: var(--primary);
-            font-weight: bold;
-        }
-
-        /* TABLE */
-
-        .table-wrapper {
-            overflow-x: auto;
-            border-radius: 12px;
-            border: 1px solid var(--blue-border);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 650px;
-        }
-
-        th {
-            background: linear-gradient(120deg, #168feb, #0864c5);
-            color: white;
-            padding: 15px;
-            text-align: left;
-        }
-
-        td {
-            padding: 13px 15px;
-            border-bottom: 1px solid #e3effa;
-            color: #40536c;
-        }
-
-        tr:nth-child(even) {
-            background: #f4f9ff;
-        }
-
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        td:first-child {
-            font-weight: 600;
-            color: var(--primary-dark);
-        }
-
-        /* NIST */
-
-        .nist-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-
-        .nist-item {
-            display: flex;
-            gap: 15px;
-            align-items: flex-start;
-            background: #f5faff;
-            border: 1px solid var(--blue-border);
-            border-radius: 13px;
-            padding: 17px;
-            transition: .25s;
-        }
-
-        .nist-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 112, 220, .1);
-        }
-
-        .nist-icon {
-            min-width: 43px;
-            height: 43px;
-            border-radius: 11px;
-            background: #dceeff;
-            color: var(--primary);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 23px;
-        }
-
-        .nist-item h3 {
-            font-size: 16px;
-            color: var(--primary-dark);
-            margin-bottom: 5px;
-        }
-
-        .nist-item p {
-            font-size: 14px;
-            margin: 0;
-        }
-
-        /* RESULTS */
-
-        .result-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .metric {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 14px;
-            background: var(--primary-light);
-            border-radius: 10px;
-            margin-bottom: 12px;
-        }
-
-        .metric strong {
-            color: var(--primary-dark);
-            font-size: 20px;
-        }
-
-        .metric-label {
-            color: #405875;
-            font-weight: 600;
-        }
-
-        .result-note {
-            font-size: 13px;
-            color: var(--muted);
-        }
-
-        .api-code {
-            background: #f1f7ff;
-            border: 1px solid var(--blue-border);
-            border-radius: 12px;
-            padding: 18px;
-            overflow-x: auto;
-            color: #174b86;
-            font-size: 13px;
-            line-height: 1.8;
-        }
-
-        .api-code code {
-            font-family: Consolas, monospace;
-            white-space: pre;
-        }
-
-        /* ANALYSIS */
-
-        .analysis-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
-        }
-
-        .analysis-card {
-            border-radius: 14px;
-            padding: 21px;
-            background: #f5faff;
-            border: 1px solid var(--blue-border);
-        }
-
-        .analysis-card h3 {
-            color: var(--primary-dark);
-            margin-bottom: 12px;
-        }
-
-        .analysis-card ul {
-            padding-left: 20px;
-            color: #425875;
-        }
-
-        .analysis-card li {
-            margin-bottom: 9px;
-        }
-
-        .positive {
-            color: var(--success);
-        }
-
-        .negative {
-            color: var(--danger);
-        }
-
-        .conclusion {
-            margin-top: 20px;
-            padding: 22px;
-            background: linear-gradient(120deg, #eaf5ff, #f7fbff);
-            border-left: 5px solid var(--primary);
-            border-radius: 12px;
-        }
-
-        .conclusion h3 {
-            color: var(--primary-dark);
-            margin-bottom: 8px;
-        }
-
-        /* FOOTER */
-
-        footer {
-            background: #f0f7ff;
-            border-top: 1px solid var(--blue-border);
-            padding: 25px 0;
-            text-align: center;
-            color: var(--muted);
-            font-size: 14px;
-        }
-
-        footer strong {
-            color: var(--primary-dark);
-        }
-
-        /* RESPONSIVE */
-
-        @media (max-width: 800px) {
-            .intro-grid,
-            .result-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .analysis-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .nist-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 550px) {
-            .header-content {
-                align-items: flex-start;
-            }
-
-            .cloud-icon {
-                width: 55px;
-                height: 55px;
-                font-size: 30px;
-            }
-
-            .section-title {
-                font-size: 20px;
-            }
-
-            .card {
-                padding: 17px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bài thực hành Điện toán đám mây – Bài 1 và Bài 2</title>
+
+<style>
+:root {
+    --primary: #087fe5;
+    --primary-dark: #064a9b;
+    --primary-light: #eaf5ff;
+    --blue-border: #c6e2ff;
+    --text: #17365f;
+    --muted: #64748b;
+    --white: #ffffff;
+    --success: #159b70;
+    --danger: #e05252;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: white;
+    color: var(--text);
+    line-height: 1.7;
+}
+a { text-decoration: none; color: inherit; }
+.container { width: min(1180px, 92%); margin: auto; }
+
+header {
+    background: linear-gradient(120deg, #fff, #edf7ff);
+    border-bottom: 1px solid var(--blue-border);
+    padding: 32px 0 22px;
+}
+.header-content { display: flex; align-items: center; gap: 20px; }
+.cloud-icon {
+    width: 76px; height: 76px;
+    background: var(--primary-light);
+    border-radius: 22px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--primary); font-size: 43px;
+}
+.header-text h1 {
+    color: var(--primary-dark);
+    font-size: clamp(24px, 4vw, 36px);
+    line-height: 1.3; margin-bottom: 7px;
+}
+.header-text p { color: var(--muted); font-size: 16px; }
+.student-info { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 12px; }
+.info-tag {
+    padding: 8px 15px; background: white;
+    border: 1px solid var(--blue-border);
+    border-radius: 30px; color: var(--primary-dark); font-size: 14px;
+}
+nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(255,255,255,.96);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--blue-border);
+}
+.nav-list { display: flex; gap: 8px; overflow-x: auto; padding: 12px 0; }
+.nav-list a {
+    white-space: nowrap; padding: 9px 16px;
+    border-radius: 9px; color: var(--primary-dark);
+    font-size: 14px; font-weight: 600; transition: .25s;
+}
+.nav-list a:hover { background: var(--primary); color: white; }
+
+main { padding: 35px 0 55px; }
+section { margin-bottom: 35px; }
+.section-title {
+    display: flex; align-items: center; gap: 13px;
+    margin-bottom: 20px; color: var(--primary-dark); font-size: 25px;
+}
+.section-number {
+    width: 42px; height: 42px;
+    background: linear-gradient(135deg, #1598ff, #0064cb);
+    color: white; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; flex-shrink: 0;
+}
+.card {
+    background: white; border: 1px solid var(--blue-border);
+    border-radius: 16px; padding: 24px;
+    box-shadow: 0 5px 18px rgba(18,112,205,.07);
+}
+.card h3 { color: var(--primary-dark); margin: 16px 0 12px; font-size: 19px; }
+.card h3:first-child { margin-top: 0; }
+.card p { color: #425875; margin-bottom: 10px; }
+.intro-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 25px; align-items: center; }
+.intro-visual {
+    background: linear-gradient(145deg, #eaf6ff, white);
+    border: 1px solid var(--blue-border); border-radius: 15px;
+    min-height: 230px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 20px;
+}
+.intro-visual .big-icon { font-size: 75px; margin-bottom: 10px; }
+.intro-visual h3 { color: var(--primary-dark); }
+.check-list { list-style: none; }
+.check-list li { padding: 7px 0; display: flex; gap: 10px; align-items: flex-start; }
+.check { color: var(--primary); font-weight: bold; }
+
+.table-wrapper, .table-wrap {
+    overflow-x: auto; border-radius: 12px;
+    border: 1px solid var(--blue-border); margin: 15px 0;
+}
+table { width: 100%; border-collapse: collapse; min-width: 650px; }
+th {
+    background: linear-gradient(120deg, #168feb, #0864c5);
+    color: white; padding: 15px; text-align: left;
+}
+td { padding: 13px 15px; border-bottom: 1px solid #e3effa; color: #40536c; }
+tr:nth-child(even) { background: #f4f9ff; }
+tr:last-child td { border-bottom: none; }
+td:first-child { font-weight: 600; color: var(--primary-dark); }
+
+.nist-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+.nist-item {
+    display: flex; gap: 15px; align-items: flex-start;
+    background: #f5faff; border: 1px solid var(--blue-border);
+    border-radius: 13px; padding: 17px; transition: .25s;
+}
+.nist-item:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,112,220,.1); }
+.nist-icon {
+    min-width: 43px; height: 43px; border-radius: 11px;
+    background: #dceeff; color: var(--primary);
+    display: flex; justify-content: center; align-items: center; font-size: 23px;
+}
+.nist-item h3 { font-size: 16px; color: var(--primary-dark); margin-bottom: 5px; }
+.nist-item p { font-size: 14px; margin: 0; }
+
+.result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.metric {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px; background: var(--primary-light);
+    border-radius: 10px; margin-bottom: 12px;
+}
+.metric strong { color: var(--primary-dark); font-size: 20px; }
+.metric-label { color: #405875; font-weight: 600; }
+.result-note { font-size: 13px; color: var(--muted); }
+
+.analysis-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.analysis-card {
+    border-radius: 14px; padding: 21px;
+    background: #f5faff; border: 1px solid var(--blue-border);
+}
+.analysis-card h3 { color: var(--primary-dark); margin-bottom: 12px; }
+.analysis-card ul { padding-left: 20px; color: #425875; }
+.analysis-card li { margin-bottom: 9px; }
+.positive { color: var(--success); }
+.negative { color: var(--danger); }
+
+.conclusion {
+    margin-top: 20px; padding: 22px;
+    background: linear-gradient(120deg, #eaf5ff, #f7fbff);
+    border-left: 5px solid var(--primary); border-radius: 12px;
+}
+.conclusion h3 { color: var(--primary-dark); margin-bottom: 8px; }
+
+pre {
+    background: #f1f7ff; border: 1px solid var(--blue-border);
+    border-radius: 10px; padding: 16px; overflow-x: auto;
+    margin: 12px 0; color: #174b86; font-size: 13px; line-height: 1.7;
+}
+pre code { font-family: Consolas, monospace; white-space: pre; }
+code {
+    font-family: Consolas, monospace; background: #edf5ff;
+    padding: 2px 5px; border-radius: 4px; color: #0759a5;
+}
+.subheading { color: var(--primary-dark); margin: 22px 0 10px; font-size: 18px; }
+.tag {
+    display: inline-block; background: #e5f3ff; color: #0759a5;
+    border: 1px solid #c6e2ff; padding: 4px 10px;
+    border-radius: 20px; font-size: 12px; font-weight: 700; margin: 3px;
+}
+footer {
+    background: #f0f7ff; border-top: 1px solid var(--blue-border);
+    padding: 25px 0; text-align: center; color: var(--muted); font-size: 14px;
+}
+footer strong { color: var(--primary-dark); }
+
+@media (max-width: 800px) {
+    .intro-grid, .result-grid, .analysis-grid, .nist-grid { grid-template-columns: 1fr; }
+    .header-content { align-items: flex-start; }
+    .cloud-icon { width: 58px; height: 58px; font-size: 32px; }
+    .section-title { font-size: 21px; }
+}
+@media (max-width: 520px) {
+    .card { padding: 17px; }
+    .student-info { gap: 7px; }
+    .info-tag { font-size: 12px; }
+    .nav-list a { padding: 8px 12px; }
+}
+</style>
 </head>
 
 <body>
 
-    <!-- HEADER -->
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="cloud-icon">☁</div>
-
-                <div class="header-text">
-                    <h1>Bài 1: Làm quen với môi trường đám mây</h1>
-                    <p>Thực hành GitHub Codespaces – Triển khai Hello Cloud API – GitHub Pages</p>
-                </div>
-            </div>
-
-            <div class="student-info">
-                <span class="info-tag">👨‍🎓 Nguyễn Minh Trí</span>
-                <span class="info-tag">MSSV: 23240802010382</span>
-                <span class="info-tag">Nền tảng: GitHub Codespaces</span>
+<header>
+    <div class="container">
+        <div class="header-content">
+            <div class="cloud-icon">☁</div>
+            <div class="header-text">
+                <h1>BÀI THỰC HÀNH ĐIỆN TOÁN ĐÁM MÂY</h1>
+                <p>Bài 1: Làm quen với môi trường đám mây | Bài 2: Ảo hóa, container và mô phỏng trung tâm dữ liệu</p>
             </div>
         </div>
-    </header>
-
-    <!-- NAVIGATION -->
-    <nav>
-        <div class="container">
-            <div class="nav-list">
-                <a href="#overview">Tổng quan</a>
-                <a href="#comparison">So sánh môi trường</a>
-                <a href="#nist">Đặc tính NIST</a>
-                <a href="#results">Kết quả thực nghiệm</a>
-                <a href="#analysis">Phân tích & Kết luận</a>
-            </div>
+        <div class="student-info">
+            <span class="info-tag">👨‍🎓 Nguyễn Minh Trí</span>
+            <span class="info-tag">🆔 MSSV: 23240802010382</span>
+            <span class="info-tag">☁️ GitHub Codespaces</span>
         </div>
-    </nav>
+    </div>
+</header>
 
-    <main class="container">
+<nav>
+    <div class="container">
+        <div class="nav-list">
+            <a href="#intro">Giới thiệu</a>
+            <a href="#environment">Môi trường</a>
+            <a href="#nist">NIST</a>
+            <a href="#results">Kết quả Bài 1</a>
+            <a href="#analysis">Phân tích Bài 1</a>
+            <a href="#b2-intro">Bài 2</a>
+            <a href="#docker">Docker</a>
+            <a href="#ghcr">GHCR</a>
+            <a href="#virtualization">VM và Container</a>
+            <a href="#cloudsim">CloudSim Plus</a>
+            <a href="#b2-questions">Câu hỏi bảo vệ</a>
+            <a href="#b2-conclusion">Kết luận</a>
+        </div>
+    </div>
+</nav>
 
-        <!-- 1. INTRODUCTION -->
-        <section id="overview">
-            <h2 class="section-title">
-                <span class="section-number">1</span>
-                Giới thiệu bài thực hành
-            </h2>
+<main class="container">
 
-            <div class="card intro-grid">
-                <div class="intro-visual">
-                    <div class="big-icon">💻</div>
-                    <h3>Hello Cloud API</h3>
-                    <p>Phát triển ứng dụng trên nền tảng đám mây</p>
-                </div>
+<section id="intro">
+    <h2 class="section-title"><span class="section-number">1</span> Giới thiệu bài thực hành</h2>
+    <div class="intro-grid">
+        <div class="intro-visual">
+            <div class="big-icon">☁️</div>
+            <h3>Cloud Computing</h3>
+            <p>Điện toán đám mây</p>
+        </div>
+        <div class="card">
+            <h3>Mục tiêu thực hành</h3>
+            <p>Bài thực hành giúp tìm hiểu môi trường điện toán đám mây thông qua GitHub Codespaces, làm quen với tài nguyên máy tính được cung cấp trên nền tảng cloud và triển khai một ứng dụng API đơn giản.</p>
+            <ul class="check-list">
+                <li><span class="check">✓</span> Làm quen với môi trường phát triển GitHub Codespaces.</li>
+                <li><span class="check">✓</span> So sánh môi trường máy tính cá nhân và môi trường cloud.</li>
+                <li><span class="check">✓</span> Tìm hiểu năm đặc trưng thiết yếu của điện toán đám mây theo NIST.</li>
+                <li><span class="check">✓</span> Xây dựng và chạy thử ứng dụng Hello Cloud API.</li>
+                <li><span class="check">✓</span> Quan sát tài nguyên CPU, RAM, hệ điều hành và môi trường thực thi.</li>
+            </ul>
+        </div>
+    </div>
+</section>
 
-                <div>
-                    <h3>Mục tiêu bài thực hành</h3>
+<section id="environment">
+    <h2 class="section-title"><span class="section-number">2</span> Môi trường thực hành</h2>
+    <div class="card">
+        <h3>2.1. Máy tính cá nhân và GitHub Codespaces</h3>
+        <p>Trong bài thực hành, môi trường máy tính cá nhân được so sánh với môi trường phát triển đám mây GitHub Codespaces. Codespaces cung cấp một môi trường Linux được cấu hình sẵn, có thể truy cập thông qua trình duyệt và sử dụng tài nguyên tính toán từ xa.</p>
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th>Tiêu chí</th><th>Máy tính cá nhân</th><th>GitHub Codespaces</th></tr></thead>
+                <tbody>
+                    <tr><td>Hệ điều hành</td><td>Windows 11 Home Single Language</td><td>Debian GNU/Linux 13 (Trixie)</td></tr>
+                    <tr><td>CPU</td><td>AMD Ryzen 5 5600H</td><td>2 CPUs</td></tr>
+                    <tr><td>Số nhân / luồng</td><td>6 nhân / 12 luồng</td><td>2 CPU được cấp cho Codespace</td></tr>
+                    <tr><td>RAM</td><td>15.38 GB</td><td>7.756 GiB</td></tr>
+                    <tr><td>Môi trường</td><td>Máy tính vật lý cá nhân</td><td>Máy ảo/môi trường cloud được quản lý bởi GitHub</td></tr>
+                    <tr><td>Khả năng truy cập</td><td>Phụ thuộc thiết bị cá nhân</td><td>Truy cập qua trình duyệt hoặc VS Code</td></tr>
+                </tbody>
+            </table>
+        </div>
 
-                    <ul class="check-list">
-                        <li>
-                            <span class="check">✔</span>
-                            Làm quen với môi trường phát triển GitHub Codespaces.
-                        </li>
-                        <li>
-                            <span class="check">✔</span>
-                            Khởi tạo môi trường Node.js và xây dựng API đơn giản.
-                        </li>
-                        <li>
-                            <span class="check">✔</span>
-                            Triển khai ứng dụng Hello Cloud API trên Codespaces.
-                        </li>
-                        <li>
-                            <span class="check">✔</span>
-                            So sánh môi trường máy tính cá nhân và môi trường đám mây.
-                        </li>
-                        <li>
-                            <span class="check">✔</span>
-                            Tìm hiểu 5 đặc tính điện toán đám mây theo NIST.
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </section>
+        <h3 class="subheading">2.2. Công cụ và phiên bản</h3>
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th>Công cụ</th><th>Phiên bản / thông tin</th></tr></thead>
+                <tbody>
+                    <tr><td>Node.js</td><td>v22.23.4</td></tr>
+                    <tr><td>npm</td><td>10.9.9</td></tr>
+                    <tr><td>Docker</td><td>29.9.3</td></tr>
+                    <tr><td>Hệ điều hành Codespaces</td><td>Debian GNU/Linux 13 (Trixie)</td></tr>
+                    <tr><td>Kernel</td><td>Linux 6.8.0-1064-azure (kết quả ghi nhận ở Bài 1)</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
 
-        <!-- 2. COMPARISON -->
-        <section id="comparison">
-            <h2 class="section-title">
-                <span class="section-number">2</span>
-                So sánh môi trường phát triển
-            </h2>
+<section id="nist">
+    <h2 class="section-title"><span class="section-number">3</span> Năm đặc trưng thiết yếu của điện toán đám mây theo NIST</h2>
+    <div class="nist-grid">
+        <div class="nist-item">
+            <div class="nist-icon">🖥️</div>
+            <div><h3>1. On-demand self-service</h3><p>Người dùng có thể tự cung cấp tài nguyên tính toán như máy chủ, dung lượng lưu trữ và mạng khi cần mà không cần tương tác trực tiếp với nhà cung cấp dịch vụ.</p></div>
+        </div>
+        <div class="nist-item">
+            <div class="nist-icon">🌐</div>
+            <div><h3>2. Broad network access</h3><p>Dịch vụ được truy cập thông qua mạng bằng các cơ chế tiêu chuẩn, hỗ trợ nhiều loại thiết bị như máy tính, điện thoại và máy tính bảng.</p></div>
+        </div>
+        <div class="nist-item">
+            <div class="nist-icon">📦</div>
+            <div><h3>3. Resource pooling</h3><p>Tài nguyên của nhà cung cấp được gom lại để phục vụ nhiều khách hàng theo mô hình multi-tenant, phân bổ linh hoạt theo nhu cầu.</p></div>
+        </div>
+        <div class="nist-item">
+            <div class="nist-icon">⚡</div>
+            <div><h3>4. Rapid elasticity</h3><p>Tài nguyên có thể được mở rộng hoặc thu hẹp nhanh chóng theo nhu cầu. Đối với người dùng, tài nguyên có thể được xem như không giới hạn.</p></div>
+        </div>
+        <div class="nist-item">
+            <div class="nist-icon">📊</div>
+            <div><h3>5. Measured service</h3><p>Việc sử dụng tài nguyên được đo lường, giám sát và báo cáo, giúp người dùng và nhà cung cấp kiểm soát mức tiêu thụ dịch vụ.</p></div>
+        </div>
+    </div>
+</section>
 
-            <div class="card">
-                <h3>Máy tính cá nhân và GitHub Codespaces</h3>
-
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Tiêu chí</th>
-                                <th>Máy tính cá nhân (Local)</th>
-                                <th>GitHub Codespaces</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr>
-                                <td>Hệ điều hành</td>
-                                <td>Windows 11 Home Single Language</td>
-                                <td>Debian GNU/Linux 13 (Trixie)</td>
-                            </tr>
-
-                            <tr>
-                                <td>CPU</td>
-                                <td>AMD Ryzen 5 5600H</td>
-                                <td>2 CPUs được cấp cho môi trường</td>
-                            </tr>
-
-                            <tr>
-                                <td>Số nhân / luồng</td>
-                                <td>6 nhân / 12 luồng</td>
-                                <td>Không xác định số nhân vật lý của máy chủ</td>
-                            </tr>
-
-                            <tr>
-                                <td>RAM</td>
-                                <td>15.38 GB</td>
-                                <td>Khoảng 7.756 GiB theo Docker Info</td>
-                            </tr>
-
-                            <tr>
-                                <td>Node.js</td>
-                                <td>Cài đặt trên máy cá nhân</td>
-                                <td>v22.23.4</td>
-                            </tr>
-
-                            <tr>
-                                <td>Cài đặt & cấu hình</td>
-                                <td>Người dùng tự cài đặt và cấu hình</td>
-                                <td>Môi trường phát triển được cung cấp sẵn</td>
-                            </tr>
-
-                            <tr>
-                                <td>Khả năng truy cập</td>
-                                <td>Chủ yếu trên máy đã cài đặt</td>
-                                <td>Truy cập qua Internet từ nhiều thiết bị</td>
-                            </tr>
-
-                            <tr>
-                                <td>Tính đồng nhất</td>
-                                <td>Có thể khác nhau giữa các máy</td>
-                                <td>Có thể cấu hình môi trường nhất quán</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-        <!-- 3. NIST -->
-        <section id="nist">
-            <h2 class="section-title">
-                <span class="section-number">3</span>
-                5 đặc tính của điện toán đám mây (NIST)
-            </h2>
-
-            <div class="nist-grid">
-
-                <div class="nist-item">
-                    <div class="nist-icon">☁</div>
-                    <div>
-                        <h3>1. On-demand Self-service</h3>
-                        <p>
-                            Người dùng có thể tự tạo và sử dụng tài nguyên
-                            điện toán khi có nhu cầu mà không cần tương tác
-                            trực tiếp với nhà cung cấp.
-                        </p>
-                        <p><strong>Ví dụ:</strong> Tạo Codespace trực tiếp từ repository GitHub.</p>
-                    </div>
-                </div>
-
-                <div class="nist-item">
-                    <div class="nist-icon">🌐</div>
-                    <div>
-                        <h3>2. Broad Network Access</h3>
-                        <p>
-                            Các dịch vụ đám mây có thể được truy cập thông qua
-                            mạng Internet bằng nhiều loại thiết bị khác nhau.
-                        </p>
-                        <p><strong>Ví dụ:</strong> Truy cập Codespaces từ máy tính hoặc điện thoại.</p>
-                    </div>
-                </div>
-
-                <div class="nist-item">
-                    <div class="nist-icon">▱</div>
-                    <div>
-                        <h3>3. Resource Pooling</h3>
-                        <p>
-                            Tài nguyên điện toán được tập trung trong một
-                            kho dùng chung và phân bổ linh hoạt cho nhiều người dùng.
-                        </p>
-                        <p><strong>Ví dụ:</strong> Codespaces sử dụng tài nguyên từ hạ tầng đám mây của GitHub.</p>
-                    </div>
-                </div>
-
-                <div class="nist-item">
-                    <div class="nist-icon">↗</div>
-                    <div>
-                        <h3>4. Rapid Elasticity</h3>
-                        <p>
-                            Tài nguyên có thể được mở rộng hoặc thu hẹp nhanh chóng
-                            tùy theo nhu cầu sử dụng.
-                        </p>
-                        <p><strong>Ví dụ:</strong> Lựa chọn cấu hình Codespaces phù hợp với nhu cầu phát triển.</p>
-                    </div>
-                </div>
-
-                <div class="nist-item">
-                    <div class="nist-icon">▥</div>
-                    <div>
-                        <h3>5. Measured Service</h3>
-                        <p>
-                            Hệ thống tự động đo lường, giám sát và báo cáo
-                            mức sử dụng tài nguyên.
-                        </p>
-                        <p><strong>Ví dụ:</strong> Theo dõi CPU-hours và dung lượng lưu trữ tại GitHub Billing Usage.</p>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- 4. RESULTS -->
-        <section id="results">
-            <h2 class="section-title">
-                <span class="section-number">4</span>
-                Kết quả thực nghiệm
-            </h2>
-
-            <div class="result-grid">
-
-                <div class="card">
-                    <h3>⏱ Thời gian thiết lập môi trường</h3>
-
-                    <div class="metric">
-                        <span class="metric-label">Máy tính cá nhân</span>
-                        <strong>1,35 giây</strong>
-                    </div>
-
-                    <div class="metric">
-                        <span class="metric-label">GitHub Codespaces</span>
-                        <strong>2,18 giây</strong>
-                    </div>
-
-                    <p class="result-note">
-                        Số liệu được ghi nhận từ hai ảnh đồng hồ bấm giờ.
-                        Đây là kết quả của hai lần đo riêng lẻ, không phải
-                        thời gian khởi tạo toàn bộ môi trường.
-                    </p>
-                </div>
-
-                <div class="card">
-                    <h3>💻 Thông tin môi trường Codespaces</h3>
-
-                    <div class="metric">
-                        <span class="metric-label">Node.js</span>
-                        <strong>v22.23.4</strong>
-                    </div>
-
-                    <div class="metric">
-                        <span class="metric-label">Docker</span>
-                        <strong>v29.9.3</strong>
-                    </div>
-
-                    <div class="metric">
-                        <span class="metric-label">CPU</span>
-                        <strong>2 CPUs</strong>
-                    </div>
-
-                    <div class="metric">
-                        <span class="metric-label">RAM</span>
-                        <strong>7.756 GiB</strong>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="card" style="margin-top:20px;">
-                <h3>📡 Kết quả API Hello Cloud</h3>
-
-                <p>
-                    Sau khi triển khai thành công, API có thể trả về
-                    thông tin môi trường đang chạy.
-                </p>
-
-                <pre class="api-code"><code>{
-  "message": "Xin chào từ đám mây!",
-  "host": "codespaces-99ba78",
-  "platform": "Linux 6.8.0-1064-azure",
-  "cpus": 2,
-  "memoryGB": 7.8,
-  "uptimeSec": "Thay đổi theo thời điểm gọi API",
-  "time": "Thời gian thực tế khi gọi API"
+<section id="results">
+    <h2 class="section-title"><span class="section-number">4</span> Kết quả thực nghiệm Bài 1</h2>
+    <div class="result-grid">
+        <div class="card">
+            <h3>Thông tin tài nguyên Codespaces</h3>
+            <div class="metric"><span class="metric-label">CPU</span><strong>2 CPUs</strong></div>
+            <div class="metric"><span class="metric-label">RAM</span><strong>7.756 GiB</strong></div>
+            <div class="metric"><span class="metric-label">Node.js</span><strong>v22.23.4</strong></div>
+            <div class="metric"><span class="metric-label">Docker</span><strong>29.9.3</strong></div>
+            <p class="result-note">Đây là thông tin môi trường Codespaces được ghi nhận trong quá trình thực hành.</p>
+        </div>
+        <div class="card">
+            <h3>Kết quả kiểm tra thời gian</h3>
+            <div class="metric"><span class="metric-label">Lần đo thứ nhất</span><strong>1.35 giây</strong></div>
+            <div class="metric"><span class="metric-label">Lần đo thứ hai</span><strong>2.18 giây</strong></div>
+            <p class="result-note">Hai giá trị là hai lần đo riêng biệt trong bài thực hành, không phải tổng thời gian khởi tạo toàn bộ môi trường Codespaces.</p>
+        </div>
+    </div>
+    <div class="card" style="margin-top:20px;">
+        <h3>4.1. Kết quả Hello Cloud API</h3>
+        <p>Ứng dụng API được xây dựng bằng Node.js và Express, sau đó chạy thử trong môi trường GitHub Codespaces. API trả về thông tin môi trường đang thực thi.</p>
+        <pre><code>{
+  "message": "Hello Cloud API",
+  "platform": "linux",
+  "kernel": "Linux 6.8.0-1064-azure"
 }</code></pre>
+        <p class="result-note">Đây là nội dung phản hồi mẫu được ghi nhận trong quá trình kiểm thử API.</p>
+    </div>
+</section>
 
-                <p class="result-note">
-                    Lưu ý: Đây là ví dụ dựa trên kết quả API đã ghi nhận.
-                    Các trường uptimeSec và time thay đổi theo thời điểm thực tế.
-                </p>
-            </div>
-        </section>
-
-        <!-- 5. ANALYSIS -->
-        <section id="analysis">
-            <h2 class="section-title">
-                <span class="section-number">5</span>
-                Phân tích và kết luận
-            </h2>
-
-            <div class="analysis-grid">
-
-                <div class="analysis-card">
-                    <h3>📊 Trả lời câu hỏi</h3>
-                    <ul>
-                        <li>
-                            So sánh trường host trước và sau khi Stop/Start
-                            để quan sát hostname của môi trường.
-                        </li>
-                        <li>
-                            GitHub Codespaces gần với mô hình PaaS vì GitHub
-                            quản lý hạ tầng và máy ảo, người dùng tập trung
-                            phát triển mã nguồn.
-                        </li>
-                        <li>
-                            Chỉ dựa vào hostname không đủ chứng minh máy ảo
-                            đã chuyển sang máy chủ vật lý khác.
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="analysis-card">
-                    <h3 class="positive">✔ Ưu điểm</h3>
-                    <ul>
-                        <li>Không cần tự cài đặt toàn bộ môi trường trên máy lab.</li>
-                        <li>Môi trường phát triển có thể được cấu hình nhất quán.</li>
-                        <li>Truy cập linh hoạt từ nhiều thiết bị có Internet.</li>
-                        <li>Dễ dàng lưu trữ và đồng bộ mã nguồn qua GitHub.</li>
-                    </ul>
-                </div>
-
-                <div class="analysis-card">
-                    <h3 class="negative">⚠ Hạn chế và rủi ro</h3>
-                    <ul>
-                        <li>Phụ thuộc vào kết nối Internet.</li>
-                        <li>Rủi ro bảo mật khi tài khoản hoặc mã nguồn bị lộ.</li>
-                        <li>Có thể phát sinh chi phí khi vượt hạn mức miễn phí.</li>
-                        <li>Phụ thuộc vào nền tảng và dịch vụ của nhà cung cấp.</li>
-                    </ul>
-                </div>
-
-            </div>
-
-            <div class="conclusion">
-                <h3>🎯 Kết luận</h3>
-
-                <p>
-                    Qua bài thực hành, GitHub Codespaces cho thấy khả năng
-                    cung cấp môi trường phát triển phần mềm trên nền tảng
-                    đám mây một cách linh hoạt và thuận tiện. Người dùng
-                    có thể xây dựng, kiểm thử và triển khai ứng dụng mà
-                    không cần tự thiết lập toàn bộ hạ tầng trên máy tính
-                    cá nhân. Tuy nhiên, cần chú ý đến vấn đề bảo mật,
-                    kết nối Internet và quản lý tài nguyên để sử dụng
-                    dịch vụ hiệu quả.
-                </p>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- FOOTER -->
-    <footer>
-        <div class="container">
-            <p><strong>BÀI THỰC HÀNH ĐIỆN TOÁN ĐÁM MÂY</strong></p>
-            <p>GitHub Codespaces – Hello Cloud API – GitHub Pages</p>
-            <p>Nguyễn Minh Trí | 23240802010382</p>
+<section id="analysis">
+    <h2 class="section-title"><span class="section-number">5</span> Phân tích và kết luận Bài 1</h2>
+    <div class="analysis-grid">
+        <div class="analysis-card">
+            <h3 class="positive">Ưu điểm</h3>
+            <ul>
+                <li>Không cần cài đặt toàn bộ môi trường phát triển trên máy cá nhân.</li>
+                <li>Có thể truy cập môi trường làm việc từ nhiều thiết bị.</li>
+                <li>Môi trường được cấu hình sẵn, thuận tiện cho làm việc nhóm.</li>
+            </ul>
         </div>
-    </footer>
+        <div class="analysis-card">
+            <h3 class="negative">Hạn chế</h3>
+            <ul>
+                <li>Phụ thuộc vào kết nối Internet.</li>
+                <li>Tài nguyên phụ thuộc cấu hình và giới hạn gói dịch vụ.</li>
+                <li>Thời gian sử dụng có thể bị giới hạn theo chính sách nền tảng.</li>
+            </ul>
+        </div>
+        <div class="analysis-card">
+            <h3>Nhận xét</h3>
+            <ul>
+                <li>Codespaces là môi trường phát triển cloud thuận tiện.</li>
+                <li>Tài nguyên được cấp phát từ xa và có thể quan sát qua terminal.</li>
+                <li>Phù hợp với bài thực hành và phát triển phần mềm.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="conclusion">
+        <h3>🎯 Kết luận Bài 1</h3>
+        <p>Qua bài thực hành, em đã làm quen với GitHub Codespaces, tìm hiểu sự khác nhau giữa môi trường máy tính cá nhân và môi trường điện toán đám mây, đồng thời nắm được năm đặc trưng thiết yếu của cloud computing theo NIST. Việc triển khai Hello Cloud API giúp hiểu rõ hơn cách ứng dụng có thể hoạt động trong môi trường cloud mà không phụ thuộc trực tiếp vào hệ điều hành của máy cá nhân.</p>
+    </div>
+</section>
+
+<section id="b2-intro">
+    <h2 class="section-title"><span class="section-number">6</span> Bài 2 – Ảo hóa, container và mô phỏng trung tâm dữ liệu</h2>
+    <div class="card">
+        <p>Bài thực hành tập trung vào việc đóng gói ứng dụng bằng Docker, triển khai nhiều container, giới hạn tài nguyên CPU và RAM, đưa image lên GitHub Container Registry (GHCR), đồng thời sử dụng CloudSim Plus để mô phỏng việc cấp phát tài nguyên trong trung tâm dữ liệu.</p>
+        <span class="tag">Docker</span>
+        <span class="tag">Container</span>
+        <span class="tag">GHCR</span>
+        <span class="tag">CPU / RAM limits</span>
+        <span class="tag">CloudSim Plus</span>
+    </div>
+</section>
+<section id="docker">
+    <h2 class="section-title"><span class="section-number">7</span> Đóng gói và triển khai ứng dụng bằng Docker</h2>
+    <div class="card">
+        <h3>7.1. Môi trường Docker</h3>
+        <p>Thực hiện trong GitHub Codespaces, sử dụng Node.js 22 và Docker Engine. Docker daemon hoạt động bình thường, môi trường sử dụng cgroup v2.</p>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Thông tin</th><th>Kết quả</th></tr></thead>
+                <tbody>
+                    <tr><td>Repository</td><td>note-api-23240802010382</td></tr>
+                    <tr><td>Codespace</td><td>fluffy-space-enigma</td></tr>
+                    <tr><td>Đường dẫn làm việc</td><td>/workspaces/note-api-23240802010382</td></tr>
+                    <tr><td>Node.js</td><td>v22.23.4</td></tr>
+                    <tr><td>Docker</td><td>29.9.3</td></tr>
+                    <tr><td>RAM môi trường</td><td>7.756 GiB</td></tr>
+                    <tr><td>CPU môi trường</td><td>2 CPUs</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="subheading">7.2. Dockerfile</h3>
+        <p>Dockerfile sử dụng image nền Node.js 22 Alpine, cài đặt các dependency cần thiết, sao chép mã nguồn và chạy ứng dụng bằng tài khoản không phải root.</p>
+        <pre><code>FROM node:22-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm ci --omit=dev
+
+COPY src ./src
+
+ENV PORT=3000
+EXPOSE 3000
+
+USER node
+
+CMD ["node", "src/server.js"]</code></pre>
+
+        <h3 class="subheading">7.3. File .dockerignore</h3>
+        <p>Loại bỏ các thư mục và tệp không cần thiết khỏi build context để giảm dữ liệu gửi đến Docker khi build image.</p>
+        <pre><code>node_modules
+.env
+.git
+docs</code></pre>
+
+        <h3 class="subheading">7.4. Build Docker image</h3>
+        <pre><code>docker build -t notes-api:1.0 .</code></pre>
+        <p>Image được build thành công với các thông tin ghi nhận:</p>
+        <div class="metric"><span class="metric-label">Image name</span><strong>notes-api:1.0</strong></div>
+        <div class="metric"><span class="metric-label">Image ID</span><strong style="font-size:15px;">245aad379084</strong></div>
+        <div class="metric"><span class="metric-label">Disk usage</span><strong>251 MB</strong></div>
+        <div class="metric"><span class="metric-label">Content size</span><strong>63.3 MB</strong></div>
+
+        <h3 class="subheading">7.5. Chạy hai container</h3>
+        <p>Khởi chạy hai container từ cùng một image. Container thứ nhất sử dụng cấu hình mặc định; container thứ hai được giới hạn CPU ở mức 0.5 và RAM 128 MB.</p>
+        <pre><code>docker run -d --name notes1 -p 3000:3000 notes-api:1.0
+
+docker run -d --name notes2 -p 3001:3000 \
+  --cpus=0.5 \
+  --memory=128m \
+  notes-api:1.0</code></pre>
+        <p>Kiểm tra hai API:</p>
+        <pre><code>curl -s localhost:3000
+curl -s localhost:3001</code></pre>
+        <p>Cả hai container đều phản hồi API thành công. Việc ánh xạ cổng giúp truy cập hai instance riêng biệt từ Codespaces.</p>
+
+        <h3 class="subheading">7.6. Kiểm tra giới hạn tài nguyên</h3>
+        <p>Sử dụng docker stats để quan sát mức sử dụng tài nguyên thực tế:</p>
+        <pre><code>docker stats --no-stream</code></pre>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Container</th><th>CPU</th><th>Memory usage</th><th>Memory limit</th><th>Memory %</th></tr></thead>
+                <tbody>
+                    <tr><td>notes1</td><td>0.00%</td><td>13.15 MiB</td><td>7.756 GiB</td><td>0.17%</td></tr>
+                    <tr><td>notes2</td><td>0.00%</td><td>12.71 MiB</td><td>128 MiB</td><td>9.93%</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p>Kiểm tra cấu hình giới hạn bằng docker inspect:</p>
+        <pre><code>docker inspect notes2 --format \
+'Memory={{.HostConfig.Memory}} NanoCpus={{.HostConfig.NanoCpus}}'</code></pre>
+        <p>Kết quả:</p>
+        <pre><code>Memory=134217728 bytes
+NanoCpus=500000000</code></pre>
+        <p class="result-note">134217728 bytes tương đương 128 MiB; NanoCpus=500000000 tương ứng 0.5 CPU. Đây là bằng chứng Docker đã áp dụng giới hạn cấu hình cho notes2.</p>
+
+        <h3 class="subheading">7.7. Giải thích kết quả</h3>
+        <p>Docker sử dụng cgroups để kiểm soát tài nguyên mà container được phép sử dụng. Tuy nhiên, API Node.js trong bài thực hành sử dụng các hàm như <code>os.totalmem()</code> để đọc thông tin hệ thống. Giá trị trả về có thể phản ánh RAM của host thay vì giới hạn cgroup được đặt cho container. Vì vậy, cần phân biệt giữa thông tin hệ thống mà ứng dụng hiển thị và giới hạn tài nguyên thực tế do Docker áp dụng.</p>
+    </div>
+</section>
+
+<section id="ghcr">
+    <h2 class="section-title"><span class="section-number">8</span> Đưa Docker image lên GitHub Container Registry</h2>
+    <div class="card">
+        <h3>8.1. Đăng nhập GHCR</h3>
+        <p>Sử dụng Personal Access Token được lưu trong Codespaces Secret với tên <code>CR_PAT</code>. Không ghi token trực tiếp vào mã nguồn hoặc báo cáo.</p>
+        <pre><code>echo "$CR_PAT" | docker login ghcr.io \
+  -u NguyenMinhTri1210TDMU --password-stdin</code></pre>
+        <p>Đăng nhập thành công vào GitHub Container Registry.</p>
+
+        <h3 class="subheading">8.2. Gắn tag và push image</h3>
+        <pre><code>docker tag notes-api:1.0 \
+  ghcr.io/nguyenminhtri1210tdmu/notes-api:1.0
+
+docker push \
+  ghcr.io/nguyenminhtri1210tdmu/notes-api:1.0</code></pre>
+        <p>Image được đẩy lên GHCR thành công với thông tin:</p>
+        <div class="metric"><span class="metric-label">Package</span><strong style="font-size:15px;">notes-api</strong></div>
+        <div class="metric"><span class="metric-label">Tag</span><strong>1.0</strong></div>
+        <div class="metric"><span class="metric-label">Digest</span><strong style="font-size:12px;">sha256:245aad379084...</strong></div>
+        <p>Đường dẫn package:</p>
+        <p><a href="https://github.com/users/nguyenminhtri1210tdmu/packages/container/package/notes-api" target="_blank" rel="noopener noreferrer" style="color:var(--primary);font-weight:700;">GitHub Container Registry – notes-api</a></p>
+        <p>Package đã được chuyển sang chế độ Public để có thể pull image mà không cần xác thực.</p>
+
+        <h3 class="subheading">8.3. Kiểm tra pull image công khai</h3>
+        <p>Xóa image cục bộ, sau đó pull lại image từ GHCR để xác minh package có thể được tải xuống và triển khai.</p>
+        <pre><code>docker rmi notes-api:1.0 \
+  ghcr.io/nguyenminhtri1210tdmu/notes-api:1.0
+
+docker pull \
+  ghcr.io/nguyenminhtri1210tdmu/notes-api:1.0
+
+docker run -d --name notes-public-test \
+  -p 3000:3000 \
+  ghcr.io/nguyenminhtri1210tdmu/notes-api:1.0
+
+curl -s localhost:3000</code></pre>
+        <p class="result-note">Đã xóa image cục bộ, pull lại image từ GHCR và chạy container kiểm thử công khai thành công. Kết quả chứng minh image có thể được phân phối và triển khai từ registry mà không cần build lại từ mã nguồn.</p>
+    </div>
+</section>
+
+<section id="virtualization">
+    <h2 class="section-title"><span class="section-number">9</span> So sánh máy ảo và container</h2>
+    <div class="card">
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Tiêu chí</th><th>Máy ảo (VM)</th><th>Container</th></tr></thead>
+                <tbody>
+                    <tr><td>Kiến trúc</td><td>Ảo hóa phần cứng, mỗi VM có hệ điều hành khách.</td><td>Cô lập tiến trình, chia sẻ kernel của host.</td></tr>
+                    <tr><td>Kích thước</td><td>Thường lớn do bao gồm hệ điều hành.</td><td>Thường nhẹ hơn, đóng gói ứng dụng và phụ thuộc.</td></tr>
+                    <tr><td>Khởi động</td><td>Thường lâu hơn do khởi động hệ điều hành.</td><td>Thường nhanh hơn do khởi chạy tiến trình.</td></tr>
+                    <tr><td>Cô lập</td><td>Ranh giới cô lập ở mức máy ảo/hypervisor.</td><td>Cô lập ở mức hệ điều hành; cần cấu hình bảo mật phù hợp.</td></tr>
+                    <tr><td>Tính tương thích</td><td>Có thể chạy hệ điều hành khách khác với host tùy hypervisor.</td><td>Phụ thuộc kernel tương thích; image Linux cần môi trường kernel Linux.</td></tr>
+                    <tr><td>Trường hợp sử dụng</td><td>Hệ thống cần nhiều hệ điều hành hoặc ranh giới cô lập mạnh.</td><td>Microservices, CI/CD, triển khai ứng dụng nhất quán.</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p>Trong bài lab, Docker container chạy trên môi trường Linux của Codespaces. Container không phải một máy ảo đầy đủ; các container chia sẻ kernel host nhưng có namespace và cgroup để cô lập tiến trình, tài nguyên.</p>
+    </div>
+</section>
+
+<section id="cloudsim">
+    <h2 class="section-title"><span class="section-number">10</span> Mô phỏng trung tâm dữ liệu bằng CloudSim Plus</h2>
+    <div class="card">
+        <h3>10.1. Môi trường và cấu hình cơ sở</h3>
+        <p>Mã nguồn ví dụ được lấy từ kho cloudsim-plus-examples tại <code>/tmp/cloudsimplus-examples</code>. Chạy ví dụ bằng:</p>
+        <pre><code>sh bootstrap.sh org.cloudsimplus.examples.BasicFirstExample</code></pre>
+        <p>Khi chỉnh sửa mã nguồn, build lại trước khi chạy để tránh sử dụng JAR cũ:</p>
+        <pre><code>sh bootstrap.sh build</code></pre>
+
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Thành phần</th><th>Cấu hình baseline</th></tr></thead>
+                <tbody>
+                    <tr><td>Host</td><td>1 Host, 8 PEs, 1000 MIPS mỗi PE</td></tr>
+                    <tr><td>VM</td><td>2 VM, mỗi VM 4 PEs, RAM 512 MB, BW 1000 Mbps, storage 10,000</td></tr>
+                    <tr><td>Cloudlet</td><td>4 Cloudlet, mỗi Cloudlet 2 PEs, length 10,000 MI, size 1024</td></tr>
+                    <tr><td>Utilization</td><td>UtilizationModelDynamic(0.5)</td></tr>
+                    <tr><td>Scheduler</td><td>VM sử dụng VmSchedulerSpaceShared; Cloudlet mặc định dùng CloudletSchedulerTimeShared</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="subheading">10.2. Kết quả bốn lần chạy</h3>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Lần chạy</th><th>Thay đổi so với baseline</th><th>Kết quả Cloudlet</th><th>Thời điểm hoàn tất</th></tr></thead>
+                <tbody>
+                    <tr><td>Run 0 – Baseline</td><td>1 Host, 2 VM, 4 Cloudlet</td><td>4/4 hoàn thành</td><td>Cloudlet cuối: 20.1 s; mô phỏng kết thúc 20.22 s</td></tr>
+                    <tr><td>Run 1 – Tăng VM</td><td>Chỉ tăng VMS = 4</td><td>2 VM không được tạo; 4/4 Cloudlet vẫn hoàn thành trên 2 VM được cấp</td><td>Cloudlet cuối: 45.6 s; mô phỏng kết thúc 45.71 s</td></tr>
+                    <tr><td>Run 2 – Tăng Cloudlet</td><td>Trở về 2 VM, tăng CLOUDLETS = 8</td><td>4 Cloudlet đầu hoàn thành; 4 Cloudlet còn lại chưa hoàn thành</td><td>4 Cloudlet hoàn thành tại 40.1 s; VM bị hủy tại 40.22 s</td></tr>
+                    <tr><td>Run 3 – SpaceShared</td><td>Baseline, đổi Cloudlet scheduler sang SpaceShared</td><td>4/4 hoàn thành</td><td>Cloudlet cuối: 20.1 s; mô phỏng kết thúc 20.22 s</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="subheading">10.3. Phân tích từng lần chạy</h3>
+        <ul>
+            <li><strong>Run 0:</strong> Hai VM có tổng cộng 8 PEs, đáp ứng nhu cầu 4 Cloudlet, mỗi Cloudlet cần 2 PEs. Cả 4 Cloudlet hoàn thành với thời gian thực thi 20.0 giây; bắt đầu tại 0.1 giây và kết thúc tại 20.1 giây.</li>
+            <li><strong>Run 1:</strong> Khi tăng lên 4 VM, mỗi VM yêu cầu 4 PEs, tổng nhu cầu là 16 PEs trong khi Host chỉ có 8 PEs. Vì vậy chỉ 2 VM được cấp phát, 2 VM còn lại không thể tạo. Bốn Cloudlet vẫn hoàn thành trên hai VM được cấp; thời điểm bắt đầu bị lùi do thời gian thử cấp phát lại.</li>
+            <li><strong>Run 2:</strong> Tám Cloudlet được gửi đến hai VM. Mỗi VM có RAM 512 MB và BW 1000 Mbps; mô hình sử dụng tài nguyên 0.5. Hệ thống cảnh báo Cloudlet 4–7 không được cấp đủ 256 MB RAM và 500 Mbps BW. Chỉ Cloudlet 0–3 hoàn thành tại 40.1 giây; không được kết luận cả 8 Cloudlet hoàn thành.</li>
+            <li><strong>Run 3:</strong> Đổi Cloudlet scheduler sang <code>CloudletSchedulerSpaceShared</code>. Với 4 PEs mỗi VM và mỗi Cloudlet cần 2 PEs, hai Cloudlet có thể chạy đồng thời trên mỗi VM. Do đó kết quả lần chạy này trùng baseline; điều này chỉ đúng với workload cụ thể, không có nghĩa hai scheduler luôn tương đương.</li>
+        </ul>
+
+        <h3 class="subheading">10.4. Phân biệt hai scheduler</h3>
+        <p><strong>VmSchedulerSpaceShared</strong> quyết định cách Host phân bổ PEs cho VM. <strong>CloudletSchedulerTimeShared</strong> hoặc <strong>CloudletSchedulerSpaceShared</strong> quyết định cách VM phân bổ CPU cho Cloudlet bên trong VM. Đây là hai tầng lập lịch khác nhau.</p>
+    </div>
+</section>
+
+<section id="b2-questions">
+    <h2 class="section-title"><span class="section-number">11</span> Câu hỏi bảo vệ và trả lời</h2>
+    <div class="card">
+        <h3>1. Vì sao API trong notes2 vẫn báo RAM của host dù container bị giới hạn 128 MB?</h3>
+        <p>Vì API Node.js đang đọc thông tin hệ thống qua <code>os.totalmem()</code>, có thể trả về RAM của host thay vì giới hạn cgroup. Docker vẫn áp dụng giới hạn 128 MiB, thể hiện qua <code>docker stats</code> và <code>docker inspect</code>. Ứng dụng cần đọc thông tin cgroup phù hợp (cgroup v2/v1) hoặc dùng thư viện nhận biết container để tính tài nguyên khả dụng.</p>
+
+        <h3>2. Time-shared và Space-shared khác nhau thế nào? Nhà cung cấp cloud nên chọn gì cho gói giá rẻ?</h3>
+        <p>Time-shared chia sẻ CPU giữa nhiều Cloudlet theo thời gian; Space-shared cấp PE cho Cloudlet và chỉ chạy khi đủ PE. Gói giá rẻ hướng đến tận dụng tài nguyên có thể chọn Time-shared để tăng mức chia sẻ và thông lượng tổng thể, nhưng cần kiểm soát hiệu năng và tránh overcommit quá mức. Space-shared phù hợp hơn khi cần phân bổ PE rõ ràng và hiệu năng dễ dự đoán.</p>
+
+        <h3>3. Mô phỏng có lợi ích và hạn chế gì so với hạ tầng thật?</h3>
+        <p>Mô phỏng giúp thử nhiều cấu hình, quan sát lập lịch và phân bổ tài nguyên với chi phí thấp, có thể lặp lại. Tuy nhiên, kết quả phụ thuộc mô hình và giả định; không phản ánh đầy đủ độ trễ mạng, lỗi phần cứng, nhiễu tải và hành vi thực tế. Vì vậy nên dùng mô phỏng để phân tích ban đầu, sau đó kiểm chứng bằng benchmark trên hạ tầng thật.</p>
+    </div>
+</section>
+
+<section id="b2-conclusion">
+    <h2 class="section-title"><span class="section-number">12</span> Kết luận Bài 2</h2>
+    <div class="conclusion">
+        <h3>🎯 Kết luận</h3>
+        <p>Qua bài thực hành, ứng dụng Notes API đã được đóng gói thành Docker image, triển khai thành nhiều container và áp dụng giới hạn CPU, RAM. Image được đẩy lên GHCR ở chế độ công khai, sau đó pull và chạy lại thành công. Phần CloudSim Plus cho thấy số lượng VM, Cloudlet và cơ chế lập lịch ảnh hưởng trực tiếp đến khả năng cấp phát tài nguyên cũng như tiến độ hoàn thành tác vụ. Kết quả mô phỏng cần được diễn giải đúng theo cấu hình và các Cloudlet thực sự hoàn thành.</p>
+    </div>
+
+    <div class="card" style="margin-top:20px;">
+        <h3>📌 Danh sách minh chứng cần đính kèm</h3>
+        <ul class="check-list">
+            <li><span class="check">□</span> Docker build thành công và danh sách image.</li>
+            <li><span class="check">□</span> Hai container đang chạy và kết quả API ở hai cổng.</li>
+            <li><span class="check">□</span> Kết quả docker stats và docker inspect thể hiện giới hạn notes2.</li>
+            <li><span class="check">□</span> GHCR package public và kết quả pull/run image công khai.</li>
+            <li><span class="check">□</span> Log hoặc bảng kết quả bốn lần chạy CloudSim Plus.</li>
+        </ul>
+        <p class="result-note">Các số liệu CloudSim được trình bày theo log thực nghiệm đã ghi nhận. Run 2 chỉ có 4/8 Cloudlet hoàn thành; không thay thế kết quả bằng giả định hoàn tất toàn bộ tác vụ.</p>
+    </div>
+</section>
+
+</main>
+
+<footer>
+    <div class="container">
+        <p><strong>BÀI THỰC HÀNH ĐIỆN TOÁN ĐÁM MÂY</strong></p>
+        <p>GitHub Codespaces – Hello Cloud API – GitHub Pages</p>
+        <p>Nguyễn Minh Trí | 23240802010382</p>
+    </div>
+</footer>
 
 </body>
 </html>
